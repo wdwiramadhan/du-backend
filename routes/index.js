@@ -1,6 +1,9 @@
 const express = require("express");
-const router = express.Router();
+const app = express();
 
-router.use("/api/user", require("./user"));
+app.get("/", (req, res) => {
+  res.json({ message: "welcome" });
+});
+app.use("/user", require("./user"));
 
-module.exports = router;
+module.exports = app;
