@@ -1,4 +1,4 @@
-const {User} = require("../models");
+const { User } = require("../models");
 const response = require("../helpers/response");
 const bcrypt = require("bcrypt");
 
@@ -9,7 +9,7 @@ exports.create = async (req, res) => {
       name,
       email,
       role,
-      password: bcrypt.hashSync(password, 10)
+      password: bcrypt.hashSync(password, 8)
     });
     await response(res, true, 201, "User successfully created", user);
   } catch (err) {
@@ -57,9 +57,9 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
   try {
     const userId = req.params.id;
-    const user = await User.destroy({ where: { id: userId } });
-    await response(res, true,200, "User successfully deleted", null);
+    await User.destroy({ where: { id: userId } });
+    await response(res, true, 200, "User successfully deleted", null);
   } catch (err) {
-    await response(res, false,500, err.message, null);
+    await response(res, false, 500, err.message, null);
   }
 };
