@@ -1,14 +1,13 @@
-const { User } = require("../models");
+const model = require("../models");
 const response = require("../helpers/response");
 const bcrypt = require("bcrypt");
 
-exports.create = async (req, res) => {
+const store = async (req, res) => {
   try {
-    const { name, email, role, password } = req.body;
-    const user = await User.create({
+    const { name, email, password } = req.body;
+    const user = await model.User.create({
       name,
       email,
-      role,
       password: bcrypt.hashSync(password, 8)
     });
     await response(res, true, 201, "User successfully created", user);
@@ -17,34 +16,33 @@ exports.create = async (req, res) => {
   }
 };
 
-exports.getAll = async (req, res) => {
+const index = async (req, res) => {
   try {
-    const users = await User.findAll();
+    const users = await model.User.findAll();
     await response(res, true, 200, "success", users);
   } catch (err) {
     await response(res, false, 500, err.message, null);
   }
 };
 
-exports.getById = async (req, res) => {
+const show = async (req, res) => {
   try {
-    const user = await User.findOne({ where: { id: req.params.id } });
+    const user = await model.User.findOne({ where: { id: req.params.id } });
     await response(res, true, 200, "success", user);
   } catch (err) {
     await response(res, false, 500, err.message, null);
   }
 };
 
-exports.update = async (req, res) => {
+const update = async (req, res) => {
   try {
     const userId = req.params.id;
-    const { name, email, role, password } = req.body;
-    const user = await User.update(
+    const { name, email, password } = req.body;
+    const user = await model.User.update(
       {
         name,
-        email,
-        role,
-        password: bcrypt.hashSync(password, 10)
+        email, 
+        password: bcrypt.hashSync(password, 8)
       },
       { where: { id: userId } }
     );
@@ -54,12 +52,20 @@ exports.update = async (req, res) => {
   }
 };
 
-exports.delete = async (req, res) => {
+const destroy = async (req, res) => {
   try {
     const userId = req.params.id;
-    await User.destroy({ where: { id: userId } });
+    await model.User.destroy({ where: { id: userId } });
     await response(res, true, 200, "User successfully deleted", null);
   } catch (err) {
     await response(res, false, 500, err.message, null);
   }
+};
+
+module.exports = {
+  index,
+  store,
+  show,
+  update,
+  destroy
 };
