@@ -1,7 +1,5 @@
 # du-backend
 
-# bidikkampus
-
 ## Build Setup
 
 ``` bash
