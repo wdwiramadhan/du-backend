@@ -1,6 +1,14 @@
 const model = require("../models");
 const response = require("../helpers/response");
-const bcrypt = require("bcrypt");
+
+const index = async (req, res) => {
+  try {
+    const registrants = await model.Registrant.findAll({ include: "class" });
+    await response(res, true, 200, "Operation Success", registrants);
+  } catch (err) {
+    await response(res, false, 500, err.message);
+  }
+};
 
 const store = async (req, res) => {
   try {
@@ -22,8 +30,9 @@ const store = async (req, res) => {
 
 const show = async (req, res) => {
   try {
-    const registrant = await model.User.findOne({
-      where: { id: req.params.id }
+    const registrant = await model.Registrant.findOne({
+      where: { id: req.params.id },
+      include: "class"
     });
     await response(res, true, 200, "Operation Success", registrant);
   } catch (err) {
@@ -34,7 +43,7 @@ const show = async (req, res) => {
 const update = async (req, res) => {
   try {
     const { name, email, phone, socmed, class_id } = req.body;
-    const registrant = await model.User.update(
+    const registrant = await model.Registrant.update(
       {
         name,
         email,
@@ -52,7 +61,7 @@ const update = async (req, res) => {
 
 const destroy = async (req, res) => {
   try {
-    const destroy = await model.User.delete({ where: { id: req.params.id } });
+    const destroy = await model.Registrant.delete({ where: { id: req.params.id } });
     if (destroy) {
       await response(res, true, 200, "delete success");
     }
@@ -62,6 +71,7 @@ const destroy = async (req, res) => {
 };
 
 module.exports = {
+  index,
   store,
   show,
   update,
