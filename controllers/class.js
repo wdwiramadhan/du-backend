@@ -3,8 +3,8 @@ const response = require("../helpers/response");
 
 const index = async (req, res) => {
   try {
-    const classes = await model.Class.findAll();
-    await response(res, 200, true, "Operation Success", classes);
+    const data = await model.Class.findAll();
+    await response(res, 200, true, "Operation Success", data);
   } catch (err) {
     await response(res, 500, false, err.message);
   }
