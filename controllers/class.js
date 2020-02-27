@@ -4,9 +4,9 @@ const response = require("../helpers/response");
 const index = async (req, res) => {
   try {
     const data = await model.Class.findAll();
-    await response(res, 200, true, "Operation Success", data);
+    await response(res, true, 200, "Operation Success", data);
   } catch (err) {
-    await response(res, 500, false, err.message);
+    await response(res, false, 500, err.message);
   }
 };
 
@@ -26,7 +26,29 @@ const store = async (req, res) => {
   }
 };
 
+const show = async (req, res) => {
+  try {
+    const data = await model.Class.findOne({
+      where: { id: req.params.id }
+    });
+    await response(res, true, 200, "Operation Success", data);
+  } catch (err) {
+    await response(res, false, 500, err.message);
+  }
+};
+
+const update = async(req, res) => {
+
+}
+
+const destroy = async(req, res) => {
+
+}
+
 module.exports = {
   index,
-  store
+  store,
+  show,
+  update,
+  destroy
 };
