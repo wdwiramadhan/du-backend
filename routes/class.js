@@ -4,8 +4,8 @@ const classes = require("../controllers/class");
 
 router.get("/", classes.index);
 router.post("/", classes.store);
-// router.get("/:id", Class.show);
-// router.put("/:id", Class.update);
-// router.delete("/:id", Class.destroy);
+router.get("/:id", classes.show);
+router.put("/:id", classes.update);
+router.delete("/:id", classes.destroy);
 
 module.exports = router;
