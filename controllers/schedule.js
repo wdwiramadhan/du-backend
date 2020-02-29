@@ -3,7 +3,7 @@ const response = require("../helpers/response");
 
 const index = async (req, res) => {
   try {
-    const schedules = await model.Schedule.findAll();
+    const schedules = await model.Schedule.findAll({include:'class'});
     await response(res, true, 200, "Operation success", schedules);
   } catch (err) {
     await response(res, false, 500, err.message);
@@ -30,7 +30,7 @@ const show = async (req, res) => {
   try {
     const schedule = await model.Schedule.findOne({
       where: { id: req.params.id }
-    });
+    },{include:'class'});
     await response(res, true, 200, "Operation success", schedule);
   } catch (err) {
     await response(res, false, 500, err.message);
