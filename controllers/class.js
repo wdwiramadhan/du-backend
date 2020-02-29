@@ -37,13 +37,31 @@ const show = async (req, res) => {
   }
 };
 
-const update = async(req, res) => {
+const update = async (req, res) => {
+  try {
+    const { name, capacity, speaker } = req.body;
+    const data = await model.Class.update(
+      {
+        name,
+        capacity,
+        speaker
+      },
+      { where: { id: req.params.id } }
+    );
+    await response(res, true, 200, "Class updated", data);
+  } catch (err) {
+    await response(res, false, 500, err.message);
+  }
+};
 
-}
-
-const destroy = async(req, res) => {
-
-}
+const destroy = async (req, res) => {
+  try {
+    await model.Class.destroy({ where: { id: req.params.id } });
+    await response(res, true, 200, 'Class deleted')
+  } catch (err) {
+    await response(res, false, 500, err.message);
+  }
+};
 
 module.exports = {
   index,
