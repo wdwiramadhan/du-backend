@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     speaker: DataTypes.STRING
   }, {});
   Class.associate = function(models) {
-    // associations can be defined here
+    Class.hasMany(models.Schedule,{foreignKey:'class_id',as:'schedule'})
   };
   return Class;
 };
