@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node server",
-    "dev": "nodemon server"
+    "dev": "nodemon server",
+    "db:migrate": "sequelize db:migrate"
   },
   "author": "wdwiramadhan",
   "license": "ISC",
@@ -14,11 +15,13 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
+    "email-templates": "^7.0.4",
     "express": "^4.17.1",
     "express-validator": "^6.4.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
     "mysql2": "^2.1.0",
+    "pug": "^2.0.4",
     "sequelize": "^5.21.4"
   },
   "devDependencies": {
