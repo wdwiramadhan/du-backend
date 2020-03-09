@@ -1,20 +1,25 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Classes', {
+    return queryInterface.createTable('Bills', {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
+        type: Sequelize.UUID,
+      },
+      registrant_id: {
+        type: Sequelize.UUID
+      },
+      price: {
         type: Sequelize.INTEGER
       },
-      name: {
+      status: {
         type: Sequelize.STRING
       },
-      capacity: {
-        type: Sequelize.INTEGER
+      image: {
+        type: Sequelize.STRING
       },
-      speaker: {
+      confirm_by: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -24,10 +29,13 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
+      },
+      deletedAt: {
+        type: Sequelize.DATE
       }
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Classes');
+    return queryInterface.dropTable('bills');
   }
 };
