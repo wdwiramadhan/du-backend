@@ -3,8 +3,8 @@ const response = require("../helpers/response");
 
 const index = async (req, res) => {
   try {
-    const registrants = await model.Registrant.findAll({ include: "class" });
-    await response(res, true, 200, "Operation Success", registrants);
+    const bills = await model.Bill.findAll({ include: "class" });
+    await response(res, true, 200, "Operation Success", bills);
   } catch (err) {
     await response(res, false, 500, err.message);
   }
@@ -12,22 +12,16 @@ const index = async (req, res) => {
 
 const store = async (req, res) => {
   try {
-    const { name, email, phone, socmed, class_id } = req.body;
-    const registrant = await model.Registrant.create({
-      name,
+    const { registrant_id, email, phone, socmed, class_id } = req.body;
+    const bill = await model.Bill.create({
+      registrant_id,
       email,
       phone,
       socmed,
       class_id
     });
-    const bill = {
-      registrant_id: registrant.id,
-      price: 30000,
-      status: 'Belum Bayar'
-    }
-    const registBill = await model.Bill.create(bill)
-    if (registrant) {
-      await response(res, false, 201, "Register Succcess", registrant);
+    if (bill) {
+      await response(res, false, 201, "Bill stored!", bill);
     }
   } catch (err) {
     await response(res, false, 500, err.message);
@@ -36,11 +30,11 @@ const store = async (req, res) => {
 
 const show = async (req, res) => {
   try {
-    const registrant = await model.Registrant.findOne({
+    const bill = await model.Bill.findOne({
       where: { id: req.params.id },
       include: "class"
     });
-    await response(res, true, 200, "Operation Success", registrant);
+    await response(res, true, 200, "Operation Success", bill);
   } catch (err) {
     await response(res, false, 500, err.message);
   }
@@ -49,7 +43,7 @@ const show = async (req, res) => {
 const update = async (req, res) => {
   try {
     const { name, email, phone, socmed, class_id } = req.body;
-    const registrant = await model.Registrant.update(
+    const bill = await model.Bill.update(
       {
         name,
         email,
@@ -59,7 +53,7 @@ const update = async (req, res) => {
       },
       { where: { id: req.params.id } }
     );
-    await response(res, true, 200, "update success", registrant);
+    await response(res, true, 200, "update success", bill);
   } catch (err) {
     await response(res, false, 500, err.message);
   }
@@ -67,7 +61,7 @@ const update = async (req, res) => {
 
 const destroy = async (req, res) => {
   try {
-    const destroy = await model.Registrant.delete({ where: { id: req.params.id } });
+    const destroy = await model.Bill.delete({ where: { id: req.params.id } });
     if (destroy) {
       await response(res, true, 200, "delete success");
     }
