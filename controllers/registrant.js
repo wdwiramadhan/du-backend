@@ -20,6 +20,12 @@ const store = async (req, res) => {
       socmed,
       class_id
     });
+    const bill = {
+      registrant_id: registrant.id,
+      price: 30000,
+      status: 'Belum Bayar'
+    }
+    const registBill = await model.Bill.create(bill)
     if (registrant) {
       await response(res, false, 201, "Register Succcess", registrant);
     }
