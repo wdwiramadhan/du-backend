@@ -4,9 +4,9 @@ const response = require("../helpers/response");
 const index = async (req, res) => {
   try {
     const registrants = await model.Registrant.findAll({ include: "class" });
-    await response(res, true, 200, "Operation Success", registrants);
+    return await response(res, true, 200, "Operation Success", registrants);
   } catch (err) {
-    await response(res, false, 500, err.message);
+    return await response(res, false, 500, err.message);
   }
 };
 
@@ -20,17 +20,17 @@ const store = async (req, res) => {
       socmed,
       class_id
     });
-    const bill = {
+    const billDocument = {
       registrant_id: registrant.id,
       price: 30000,
       status: 'Belum Bayar'
     }
-    const registBill = await model.Bill.create(bill)
+    const bill = await model.Bill.create(billDocument);
     if (registrant) {
-      await response(res, false, 201, "Register Succcess", registrant);
+      return await response(res, false, 201, "Register Succcess", {registrant: registrant, bill: bill});
     }
   } catch (err) {
-    await response(res, false, 500, err.message);
+    return await response(res, false, 500, err.message);
   }
 };
 
@@ -40,9 +40,12 @@ const show = async (req, res) => {
       where: { id: req.params.id },
       include: "class"
     });
-    await response(res, true, 200, "Operation Success", registrant);
+    if(registrant == null) {
+      return await response(res, true, 404, "Get Registrant id "+req.params.id+" Not exist", registrant);  
+    }
+    return await response(res, true, 200, "Get Registrant id "+req.params.id+" Success", registrant);
   } catch (err) {
-    await response(res, false, 500, err.message);
+    return await response(res, false, 500, err.message);
   }
 };
 
@@ -59,9 +62,9 @@ const update = async (req, res) => {
       },
       { where: { id: req.params.id } }
     );
-    await response(res, true, 200, "update success", registrant);
+    return await response(res, true, 200, "update success", registrant);
   } catch (err) {
-    await response(res, false, 500, err.message);
+    return await response(res, false, 500, err.message);
   }
 };
 
@@ -69,17 +72,28 @@ const destroy = async (req, res) => {
   try {
     const destroy = await model.Registrant.delete({ where: { id: req.params.id } });
     if (destroy) {
-      await response(res, true, 200, "delete success");
+      return await response(res, true, 200, "delete success");
     }
   } catch (err) {
-    await response(res, false, 500, err.message);
+    return await response(res, false, 500, err.message);
   }
 };
 
+const findByEmail = async (req, res) => {
+  try {
+    const registrant = await model.Registrant.findAll({
+      where: { email: req.body.email },
+    });
+    return await response(res, true, 200, "get Registrant success", registrant)
+  } catch (err) {
+    return await response(res, false, 500, err.message);
+  }
+}
 module.exports = {
   index,
   store,
   show,
   update,
-  destroy
+  destroy,
+  findByEmail
 };
