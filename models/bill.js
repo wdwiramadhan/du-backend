@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const bill = sequelize.define('bill', {
+  const Bill = sequelize.define('Bill', {
     id: {
       type: DataTypes.UUID,
       defaultValue:  DataTypes.UUIDV4,
@@ -15,8 +15,8 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     paranoid: true
   });
-  bill.associate = function(models) {
+  Bill.associate = function(models) {
     // associations can be defined here
   };
-  return bill;
+  return Bill;
 };
