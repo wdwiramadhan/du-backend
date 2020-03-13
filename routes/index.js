@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
 app.use("/auth", auth);
 app.use("/user", authenticate, user);
 app.use("/registrant", registrants);
-app.use("/class", classes);
+app.use("/class", authenticate, classes);
 app.use("/schedule", schedule);
 
 module.exports = app;
