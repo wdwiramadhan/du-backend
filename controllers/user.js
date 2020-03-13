@@ -10,27 +10,27 @@ const store = async (req, res) => {
       email,
       password: bcrypt.hashSync(password, 8)
     });
-    await response(res, true, 201, "User successfully created", user);
+    return await response(res, true, 201, "User successfully created", user);
   } catch (err) {
-    await response(res, false, 500, err.message, null);
+    return await response(res, false, 500, err.message, null);
   }
 };
 
 const index = async (req, res) => {
   try {
     const users = await model.User.findAll();
-    await response(res, true, 200, "success", users);
+    return await response(res, true, 200, "success", users);
   } catch (err) {
-    await response(res, false, 500, err.message, null);
+    return await response(res, false, 500, err.message, null);
   }
 };
 
 const show = async (req, res) => {
   try {
     const user = await model.User.findOne({ where: { id: req.params.id } });
-    await response(res, true, 200, "success", user);
+    return await response(res, true, 200, "success", user);
   } catch (err) {
-    await response(res, false, 500, err.message, null);
+    return await response(res, false, 500, err.message, null);
   }
 };
 
@@ -46,9 +46,9 @@ const update = async (req, res) => {
       },
       { where: { id: userId } }
     );
-    await response(res, true, 200, "User successfully updated", user);
+    return await response(res, true, 200, "User successfully updated", user);
   } catch (err) {
-    await response(res, false, 500, err.message, null);
+    return await response(res, false, 500, err.message, null);
   }
 };
 
@@ -56,9 +56,9 @@ const destroy = async (req, res) => {
   try {
     const userId = req.params.id;
     await model.User.destroy({ where: { id: userId } });
-    await response(res, true, 200, "User successfully deleted", null);
+    return await response(res, true, 200, "User successfully deleted", null);
   } catch (err) {
-    await response(res, false, 500, err.message, null);
+    return await response(res, false, 500, err.message, null);
   }
 };
 

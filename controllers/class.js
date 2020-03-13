@@ -4,9 +4,9 @@ const response = require("../helpers/response");
 const index = async (req, res) => {
   try {
     const data = await model.Class.findAll({include:'schedule'});
-    await response(res, true, 200, "Operation Success", data);
+    return await response(res, true, 200, "Operation Success", data);
   } catch (err) {
-    await response(res, false, 500, err.message);
+    return await response(res, false, 500, err.message);
   }
 };
 
@@ -19,10 +19,10 @@ const store = async (req, res) => {
       speaker
     });
     if (create) {
-      await response(res, true, 201, "Created success", create);
+      return await response(res, true, 201, "Created success", create);
     }
   } catch (err) {
-    await response(res, false, 500, err.message);
+    return await response(res, false, 500, err.message);
   }
 };
 
@@ -31,9 +31,9 @@ const show = async (req, res) => {
     const data = await model.Class.findOne({
       where: { id: req.params.id }
     });
-    await response(res, true, 200, "Operation Success", data);
+    return await response(res, true, 200, "Operation Success", data);
   } catch (err) {
-    await response(res, false, 500, err.message);
+    return await response(res, false, 500, err.message);
   }
 };
 
@@ -48,18 +48,18 @@ const update = async (req, res) => {
       },
       { where: { id: req.params.id } }
     );
-    await response(res, true, 200, "Class updated", data);
+    return await response(res, true, 200, "Class updated", data);
   } catch (err) {
-    await response(res, false, 500, err.message);
+    return await response(res, false, 500, err.message);
   }
 };
 
 const destroy = async (req, res) => {
   try {
     await model.Class.destroy({ where: { id: req.params.id } });
-    await response(res, true, 200, 'Class deleted')
+    return await response(res, true, 200, 'Class deleted')
   } catch (err) {
-    await response(res, false, 500, err.message);
+    return await response(res, false, 500, err.message);
   }
 };
 
