@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
   );
   Registrant.associate = function(models) {
     Registrant.belongsTo(models.Class, { foreignKey: "class_id", as: "class" });
+    Registrant.belongsTo(models.Bill, { foreignKey: "registrant_id", as: "registrant" });
   };
   return Registrant;
 };
