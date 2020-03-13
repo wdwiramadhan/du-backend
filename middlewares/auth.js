@@ -13,7 +13,7 @@ const register = async (req, res) => {
       }
     });
     if (findUser) {
-      await response(res, false, 422, "User has been exist");
+      return await response(res, false, 422, "User has been exist");
     }
     const { name, email, password } = req.body;
     const created = await model.User.create({
@@ -22,10 +22,10 @@ const register = async (req, res) => {
       password: bcrypt.hashSync(password, 8)
     });
     if (created) {
-      await response(res, true, 201, "User successfully created", created);
+      return await response(res, true, 201, "User successfully created", created);
     }
   } catch (err) {
-    await response(res, false, 500, err.message);
+    return await response(res, false, 500, err.message);
   }
 };
 
@@ -37,22 +37,22 @@ const login = async (req, res) => {
       }
     });
     if (!user) {
-      await response(res, false, 404, "User not found");
+      return await response(res, false, 404, "User not found");
     }
     if (!bcrypt.compareSync(req.body.password, user.password)) {
-      await response(res, false, 401, "wrong password");
+      return await response(res, false, 401, "wrong password");
     }
     const token = jwt.sign(
       { id: user.id, email: user.email },
       process.env.JWT_SECRET,
       { expiresIn: 86400 }
     );
-    await response(res, true, 200, "login successfully", {
+    return await response(res, true, 200, "login successfully", {
       token: token,
       user: user
     });
   } catch (err) {
-    await response(res, false, 500, err.message);
+    return await response(res, false, 500, err.message);
   }
 };
 
@@ -66,11 +66,11 @@ const me = async (req, res) => {
       }
     });
     if (!result) {
-      await response(res, false, 404, "User not found");
+      return await response(res, false, 404, "User not found");
     }
-    await response(res, true, 200, "success", result);
+    return await response(res, true, 200, "success", result);
   } catch (err) {
-    await response(res, false, 500, err.message);
+    return await response(res, false, 500, err.message);
   }
 };
 
