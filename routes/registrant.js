@@ -3,7 +3,7 @@ const router = express.Router();
 const registrant = require("../controllers/registrant");
 const { authenticate } = require("../middlewares/auth");
 
-router.get("/", registrant.index);
+router.get("/", authenticate, registrant.index);
 router.post("/", registrant.store);
 router.post("/find", registrant.findByEmail);
 router.get("/:id", authenticate, registrant.show);
