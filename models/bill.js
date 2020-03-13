@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
     paranoid: true
   });
   Bill.associate = function(models) {
-    // associations can be defined here
+    Bill.hasMany(models.Registrant, { foreignKey:'registrant_id', as:'registrant' });
   };
   return Bill;
 };
